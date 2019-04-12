@@ -1,0 +1,9 @@
+*.pyc
+
+neighbors.txt
+example-configs
+
+_*
+env/
+.vscode/
+credentials.yml
