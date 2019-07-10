@@ -28,11 +28,11 @@ def load_config(args, config_path="~/.tmsn_config"):
         print("'task' is not specified. Default task set to 'check'.")
         config["task"] = "check"
     if args["ami"] is None:
-        print("AMI is not specified. Default AMI set to '{}'".format(DEFAULT_AMI))
         if "ami" in config:
             args["ami"] = config["ami"]
         else:
             args["ami"] = DEFAULT_AMI
+        print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
     warning = False
     output = ""
     for t in args:
