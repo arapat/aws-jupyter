@@ -48,7 +48,7 @@ Run any script in this directory with `-h` argument will print the help message 
 #### Example:
 
 ```bash
-./create-cluster.py -c 2 --name testing
+./aws-jupyter.py create -c 2 --name testing
 ```
 
 
@@ -60,7 +60,7 @@ Run any script in this directory with `-h` argument will print the help message 
 #### Example
 
 ```bash
-./check-cluster.py --name testing
+./aws-jupyter.py check --name testing
 ```
 
 
@@ -71,7 +71,7 @@ in this cluster.
 
 #### Example
 ```bash
-./terminate-cluster.py --name testing
+./aws-jupyter.py terminate --name testing
 ```
 
 
@@ -86,7 +86,7 @@ executes without error.
 
 #### Example
 ```bash
-./run-cluster.py --script ./script-examples/hello-world.sh
+./aws-jupyter.py run --script ./script-examples/hello-world.sh
 ```
 
 
@@ -105,7 +105,7 @@ configuration files, one for each worker, and save all configuration files in th
 (e.g. `./example-configs/`). After that, run following command
 
 ```bash
-./send-configs.py --config ./example-configs/
+./lib/send-configs.py --config ./example-configs/
 ```
 
 
@@ -119,5 +119,5 @@ to this sub-directory.
 
 ### Example
 ```bash
-./retrieve-files.py --remote /home/ubuntu/workspace/rust-tmsn/output.txt --local ./_result/
+./lib/retrieve-files.py --remote /home/ubuntu/workspace/rust-tmsn/output.txt --local ./_result/
 ```

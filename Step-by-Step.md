@@ -6,7 +6,7 @@ Please read [README](README.md) for the detailed documentation.
 1. Start the cluster
 
 ```bash
-./create-cluster.py -c 1 --name jupyter
+./aws-jupyter.py create -c 1 --name jupyter
 ```
 
 To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation command above.
@@ -14,13 +14,13 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 2. Check the cluster is up
 
 ```bash
-./check-cluster.py --name jupyter
+./aws-jupyter.py check --name jupyter
 ```
 
 3. Run the setup script on the cluster
 
 ```bash
-./run-cluster.py -s script-examples/install-jupyter.sh --output
+./aws-jupyter.py run -s script-examples/install-jupyter.sh --output
 ```
 
 4. Open the URL printed out in the Step 3.
@@ -28,13 +28,13 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 5. Shut down the instance
 
 ```bash
-./terminate-cluster.py --name jupyter
+./aws-jupyter.py terminate --name jupyter
 ```
 
 6. To SSH into the first node, run
 
 ```bash
-./ssh-headnode.py --name jupyter
+./aws-jupyter.py ssh --name jupyter
 ```
 
 ## Setup and Diagnose
@@ -42,12 +42,12 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 1. To install awscli tool and upload the credentials to the instances, run
 
 ```bash
-./setup-cluster.py --name jupyter
+./lib/setup-cluster.py --name jupyter
 ```
 
 
 2. Print diagnose information to debugging
 
 ```bash
-./diagnose.py
+./lib/diagnose.py
 ```

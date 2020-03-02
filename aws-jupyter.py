@@ -5,6 +5,7 @@ from lib.check_cluster import check_cluster
 from lib.run_cluster import run_cluster
 from lib.terminate_cluster import terminate_cluster
 from lib.common import load_config
+from lib.ssh_headnode import ssh_headnode
 import argparse
 
 
@@ -68,6 +69,10 @@ if __name__ == "__main__":
             print("Cluster is not ready. Please check again later.")
     elif config["task"] == "terminate":
         terminate_cluster(config)
+    elif config["task"] == "run":
+        run_cluster(config)
+    elif config["task"] == "ssh":
+        ssh_headnode(config)
     else:
         print("Error: Cannot reconize the task type '{}'.".format(config["task"]))
         exit(1)
