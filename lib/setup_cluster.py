@@ -49,7 +49,8 @@ def setup_cluster(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Setup an existing cluster")
     parser.add_argument("--name",
-                        required=True,
+                        required=False,
+                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("--region",
                         help="Region name")

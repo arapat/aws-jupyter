@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import sys
 
 from operator import itemgetter
 from lib.common import load_config
@@ -44,14 +45,23 @@ def check_cluster(args):
     return cluster_status
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Check the status of a cluster")
+def main_check_cluster():
+    parser = argparse.ArgumentParser(
+        description="Check the status of a cluster",
+        usage="aws-jupyter.py check <args>",
+    )
     parser.add_argument("--name",
-                        required=True,
+                        required=False,
+                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("--region",
                         help="Region name")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    config = load_config(vars(parser.parse_args()))
-    check_cluster(config)
+    config = load_config(vars(parser.parse_args(sys.argv[2:])))
+    status = check_cluster(config)
+    return (config, status)
+
+
+if __name__ == '__main__':
+    main_check_cluster()

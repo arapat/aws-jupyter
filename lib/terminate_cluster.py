@@ -2,6 +2,7 @@
 import argparse
 import json
 import subprocess
+import sys
 
 from operator import itemgetter
 from lib.common import load_config
@@ -52,14 +53,22 @@ def terminate_cluster(args):
     print("Done.")
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Terminate a cluster")
+def main_terminate_cluster():
+    parser = argparse.ArgumentParser(
+        description="Terminate a cluster",
+        usage="aws-jupyter.py config <args>",
+    )
     parser.add_argument("--name",
-                        required=True,
+                        required=False,
+                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("--region",
                         help="Region name")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    config = load_config(vars(parser.parse_args()))
+    config = load_config(vars(parser.parse_args(sys.argv[2:])))
     terminate_cluster(config)
+
+
+if __name__ == '__main__':
+    main_terminate_cluster()

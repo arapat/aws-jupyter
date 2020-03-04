@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import os
+import sys
 
 from operator import itemgetter
 from lib.common import load_config
@@ -20,7 +21,7 @@ def ssh_headnode(args):
             continue
         print("\nCluster {}:".format(idx + 1))
         ready = sum(t[0] == "running" for t in status)
-        neighbors = list(map(itemgetter(1), status))
+        # neighbors = list(map(itemgetter(1), status))
         print("    Total instances: {}\n    Running: {}".format(total, ready))
         if ready == 0:
             print("    Instances status: {}".format(status[0][0]))
@@ -31,14 +32,22 @@ def ssh_headnode(args):
         break
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="SSH into the head node of a cluster")
+def main_ssh_headnode():
+    parser = argparse.ArgumentParser(
+        description="SSH into the head node of a cluster",
+        usage="aws-jupyter.py config <args>",
+    )
     parser.add_argument("--name",
-                        required=True,
+                        required=False,
+                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("--region",
                         help="Region name")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    config = load_config(vars(parser.parse_args()))
+    config = load_config(vars(parser.parse_args(sys.argv[2:])))
     ssh_headnode(config)
+
+
+if __name__ == '__main__':
+    main_ssh_headnode()

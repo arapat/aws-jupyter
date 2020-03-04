@@ -2,6 +2,7 @@
 import argparse
 import os
 import subprocess
+import sys
 
 from lib.common import load_config
 from lib.common import check_connections
@@ -85,8 +86,11 @@ def run_cluster(args):
             "on the remote instances.".format(fullpath, stdout_path, stderr_path))
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Run a script on all instances of a cluster")
+def main_run_cluster():
+    parser = argparse.ArgumentParser(
+        description="Run a script on all instances of a cluster",
+        usage="aws-jupyter.py run [<args>]",
+    )
     parser.add_argument("-s", "--script",
                         required=True,
                         help="File path of the script that needs to run on the cluster")
@@ -102,6 +106,10 @@ if __name__ == '__main__':
                               "a log file on the instance."))
     parser.add_argument("--credential",
                         help="path to the credential file")
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(sys.argv[2:]))
     config = load_config(args)
     run_cluster(config)
+
+
+if __name__ == '__main__':
+    main_run_cluster()

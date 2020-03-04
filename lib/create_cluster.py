@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import subprocess
+import sys
 import json
 
 from lib.common import load_config
@@ -80,13 +81,17 @@ def create_cluster(args):
     print("Done.")
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Crate a cluster using AWS spot instances")
+def main_create_cluster():
+    parser = argparse.ArgumentParser(
+        description="Crate a cluster using AWS spot instances",
+        usage="aws-jupyter.py create [<args>]",
+    )
     parser.add_argument("-c", "--count",
                         required=True,
                         help="the number of instances in the cluster")
     parser.add_argument("--name",
-                        required=True,
+                        required=False,
+                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("-t", "--type",
                         help="the type of the instances")
@@ -96,7 +101,7 @@ if __name__ == '__main__':
                          help="AMI type")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(sys.argv[2:]))
     if args["ami"] is None:
         print("AMI is not specified. Default AMI set to '{}'".format(DEFAULT_AMI))
         args["ami"] = DEFAULT_AMI
@@ -106,3 +111,7 @@ if __name__ == '__main__':
         args["type"] = DEFAULT_TYPE
     config = load_config(args)
     create_cluster(config)
+
+
+if __name__ == '__main__':
+    main_create_cluster()
