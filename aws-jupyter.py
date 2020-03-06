@@ -7,9 +7,6 @@ from lib.terminate_cluster import main_terminate_cluster
 from lib.set_config import main_set_config
 from lib.ssh_headnode import main_ssh_headnode
 import argparse
-
-
-import argparse
 import sys
 
 
@@ -17,18 +14,18 @@ class AwsJupyter:
     def __init__(self):
         parser = argparse.ArgumentParser(
             description="Launch Jupyter on AWS",
-            usage="aws-jupyter.py <task> [<args>]",
+            usage="aws-jupyter.py <task> [<args>]\nRun with -h to see supported tasks",
         )
         parser.add_argument(
             "task",
             help="Task to perform, should be one of 'config', 'create', 'check', 'terminate'")
         config = parser.parse_args(sys.argv[1:2])
-        if not hasattr(self, config.command):
+        if not hasattr(self, config.task):
             print("Error: Cannot reconize the task type '{}'.".format(config["task"]))
             parser.print_help()
             exit(1)
         # use dispatch pattern to invoke method with same name
-        getattr(self, config.command)()
+        getattr(self, config.task)()
 
     def config(self):
         main_set_config()
@@ -45,7 +42,7 @@ class AwsJupyter:
         if ready > 0 and ready == total:
             print("Cluster is running (yet might still being initialized). \
                    I will try to start Jupyter notebook now.")
-            config["script"] = "./script-examples/install-jupyter.sh"
+            config["script"] = "./script-examples/install-jupyter-tmsn.sh"
             config["output"] = True
             run_cluster(config)
         elif total > 0:

@@ -5,12 +5,12 @@ import sys
 import yaml
 
 
-DEFAULT_AMI  = "ami-04959231eeb07d2cd"
+DEFAULT_AMI = "ami-08cf5e5716f79b01a"  # Jupyter-tmsn
 
 def load_config(args, config_path="~/.tmsn_config"):
     def load_credential(config):
         with open(config["credential"]) as f:
-            creds = yaml.load(f)
+            creds = yaml.safe_load(f)
             creds = list(creds.values())[0]
             config["key"] = creds["key_name"]
             config["key_path"] = creds["ssh_key"]
@@ -22,12 +22,9 @@ def load_config(args, config_path="~/.tmsn_config"):
     config = {}
     if os.path.isfile(config_path):
         with open(config_path) as f:
-            config = yaml.load(f)
+            config = yaml.safe_load(f)
     # Load arguments
-    if args["task"] is None:
-        print("'task' is not specified. Default task set to 'check'.")
-        config["task"] = "check"
-    if args["ami"] is None:
+    if "ami" not in args or args["ami"] is None:
         if "ami" in config:
             args["ami"] = config["ami"]
         else:
@@ -83,6 +80,7 @@ def check_connections(instances, args, timeout=2):
     def try_ssh_instance(url):
         command = ("ssh -o StrictHostKeyChecking=no -i {} ubuntu@{} "
                     "\"echo Hello > /dev/null\"").format(args["key_path"], url)
+        print(command)
         try:
             t = subprocess.run(command, shell=True, timeout=timeout)
         except subprocess.TimeoutExpired:

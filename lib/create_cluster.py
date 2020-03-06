@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import boto.ec2
 import argparse
 import subprocess
 import sys
@@ -12,7 +13,28 @@ from lib.common import DEFAULT_AMI
 DEFAULT_TYPE = "m3.xlarge"
 
 
+def create_default_security_group(conn):
+    '''
+    Create a default security group
+    '''
+    security_group_name = "aws-jupyter"
+
+    # Delete the default security group if it exists
+    for sg in conn.get_all_security_groups():
+        if sg.name == security_group_name:
+            sg.delete()
+            break
+    # Create the new deafult security group
+    sg = conn.create_security_group(security_group_name, "for " + security_group_name)
+    sg.authorize("tcp", 0, 65535, "0.0.0.0/0")
+
+
 def create_cluster(args):
+    conn = boto.ec2.connect_to_region(
+        args["region"],
+        aws_access_key_id=args["aws_access_key_id"],
+        aws_secret_access_key=args["aws_secret_access_key"])
+    create_default_security_group(conn)
     all_status = query_status(args)
     if len(all_status):
         print("Error: A cluster with the name '{}' exists. ".format(args["name"]) +
@@ -22,6 +44,8 @@ def create_cluster(args):
         return
     credential = 'AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}"'.format(
         args["aws_access_key_id"], args["aws_secret_access_key"])
+
+    # TODO: removed "--associate-public-ip-address" from the options, check if things still work
     create_command = """
     {} aws ec2 run-instances \
         --region {} \
@@ -30,10 +54,10 @@ def create_cluster(args):
         --instance-type {} \
         --key-name {} \
         --tag-specifications 'ResourceType=instance,Tags=[{{Key=cluster-name,Value={}}}]' \
-        --associate-public-ip-address \
         --block-device-mappings \
             '[{{\"DeviceName\":\"/dev/xvdb\",\"VirtualName\":\"ephemeral0\"}}, \
               {{\"DeviceName\":\"/dev/xvdc\",\"VirtualName\":\"ephemeral1\"}}]' \
+        --security-groups aws-jupyter \
         --no-dry-run
     """.format(
         credential,

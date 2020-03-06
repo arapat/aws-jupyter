@@ -52,7 +52,6 @@ def main_check_cluster():
     )
     parser.add_argument("--name",
                         required=False,
-                        default="aws-jupyter-default",
                         help="cluster name")
     parser.add_argument("--region",
                         help="Region name")
