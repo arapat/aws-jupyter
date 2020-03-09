@@ -6,9 +6,9 @@ import sys
 import json
 from time import sleep
 
-from lib.common import load_config
-from lib.common import query_status
-from lib.common import DEFAULT_AMI
+from .common import load_config
+from .common import query_status
+from .common import DEFAULT_AMI
 
 
 DEFAULT_TYPE = "m3.xlarge"

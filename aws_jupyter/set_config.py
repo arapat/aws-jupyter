@@ -1,6 +1,6 @@
 import argparse
 import sys
-from lib.common import load_config
+from .common import load_config
 
 
 def main_set_config():

@@ -3,8 +3,8 @@ import argparse
 import sys
 
 from operator import itemgetter
-from lib.common import load_config
-from lib.common import query_status
+from .common import load_config
+from .common import query_status
 
 
 def check_cluster(args):

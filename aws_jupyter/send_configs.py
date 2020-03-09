@@ -3,8 +3,8 @@ import argparse
 import os
 import subprocess
 
-from lib.common import load_config
-from lib.common import check_connections
+from .common import load_config
+from .common import check_connections
 
 
 def check_exists(path):

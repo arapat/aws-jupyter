@@ -42,12 +42,12 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 1. To install awscli tool and upload the credentials to the instances, run
 
 ```bash
-./lib/setup-cluster.py --name jupyter
+./aws_jupyter/setup-cluster.py --name jupyter
 ```
 
 
 2. Print diagnose information to debugging
 
 ```bash
-./lib/diagnose.py
+./aws_jupyter/diagnose.py
 ```

@@ -2,8 +2,8 @@
 import argparse
 import subprocess
 
-from lib.common import load_config
-from lib.common import query_status
+from .common import load_config
+from .common import query_status
 
 
 def diagnose(args):

@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 from operator import itemgetter
-from lib.common import load_config
+from .common import load_config
 
 
 def terminate_cluster(args):
