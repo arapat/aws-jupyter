@@ -43,7 +43,7 @@ class AwsJupyter:
             print("Cluster is running (yet might still being initialized). \
                    I will try to start Jupyter notebook now.")
             config["files"] = ["./neighbors.txt"]
-            config["script"] = "./script-examples/install-jupyter-tmsn.sh"
+            config["script"] = "./scripts/install-jupyter-tmsn.sh"
             config["output"] = True
             run_cluster(config)
         elif total > 0:
