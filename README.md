@@ -46,7 +46,7 @@ Run any script in this directory with `-h` argument will print the help message 
 
 ### Create a new cluster
 
-`create-cluster.py` creates a cluster on the `m3.xlarge` instance using an AMI based on Ubuntu.
+`aws-jupyter create` creates a cluster on the `m3.xlarge` instance using an AMI based on Ubuntu.
 
 #### Example:
 
@@ -57,7 +57,7 @@ aws-jupyter create -c 2 --name testing
 
 ### Check if a cluster is ready
 
-`check-cluster.py` checks if a cluster is up and running. In addition, it also creates a
+`aws-jupyter check` checks if a cluster is up and running. In addition, it also creates a
 `neighbors.txt` file which contains the IP addresses of all the instances in the cluster.
 
 #### Example
@@ -69,7 +69,7 @@ aws-jupyter check --name testing
 
 ### Terminate a cluster
 
-`terminate-cluster.py` terminates a cluster by stopping and terminating all instances
+`aws-jupyter terminate` terminates a cluster by stopping and terminating all instances
 in this cluster.
 
 #### Example
@@ -80,7 +80,7 @@ aws-jupyter terminate --name testing
 
 ### Run a script on a cluster
 
-`run-cluster.py` runs a given script on all instances in the cluster.
+`aws-jupyter run` runs a given script on all instances in the cluster.
 It starts the script in the background, and redirect the stdout/stderr
 into a file on the instances which can be checked later.
 Thus it terminates does not necessarily mean the script has finshed executing on the cluster.
