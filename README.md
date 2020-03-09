@@ -4,15 +4,18 @@ For the quick-start guide, see [Step-by-Step.md](Step-by-Step.md).
 
 ## Install
 
-Pleasure ensure you have Python 3.
+Pleasure ensure you have Python 3. `aws-jupyter` can be install using `pip`:
 
-### Requirements
+```
+pip install aws-jupyter
+```
 
-These scripts requires Python 3 and the `awscli` package for Python 3. In addition,
-the `create-cluster.py` script uses an AMI image that located in the region `us-east-1`.
-So please make sure that your local environment is set up to use that region.
-If it is not, you can change it by running `aws configure` in your commandline, and type
-`us-east-1` for the region when prompted.
+In addition,
+we create the EC2 instances using an AMI image that located in the region `us-east-1`.
+So please make sure that your local environment is set up to use that region
+(you can run `aws-jupyter config` to verify the setting).
+
+After installation, please run `aws-jupyter config` to make sure the configuration is properly set.
 
 
 ### AWS Credential
@@ -48,7 +51,7 @@ Run any script in this directory with `-h` argument will print the help message 
 #### Example:
 
 ```bash
-./aws-jupyter.py create -c 2 --name testing
+aws-jupyter create -c 2 --name testing
 ```
 
 
@@ -60,7 +63,7 @@ Run any script in this directory with `-h` argument will print the help message 
 #### Example
 
 ```bash
-./aws-jupyter.py check --name testing
+aws-jupyter check --name testing
 ```
 
 
@@ -71,7 +74,7 @@ in this cluster.
 
 #### Example
 ```bash
-./aws-jupyter.py terminate --name testing
+aws-jupyter terminate --name testing
 ```
 
 
@@ -86,7 +89,7 @@ executes without error.
 
 #### Example
 ```bash
-./aws-jupyter.py run --script ./script-examples/hello-world.sh
+aws-jupyter run --script ./script-examples/hello-world.sh
 ```
 
 
