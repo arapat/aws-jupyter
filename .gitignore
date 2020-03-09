@@ -7,3 +7,7 @@ _*
 env/
 .vscode/
 credentials.yml
+
+aws_jupyter.egg-info/
+build/
+dist/
