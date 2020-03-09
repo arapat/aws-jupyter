@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='aws-jupyter',
-    version='0.1.1',
+    version='0.1.2',
     scripts=['aws-jupyter'] ,
     author="Julaiti Alafate",
     author_email="jalafate@gmail.com",
@@ -19,5 +19,8 @@ setuptools.setup(
         "boto",
         "pyyaml",
     ],
+    package_data={
+        "aws_jupyter": ["scripts/*", "examples/*"],
+    },
  )
 

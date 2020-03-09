@@ -91,15 +91,15 @@ def create_cluster(args):
             security_groups=[SECURITY_GROUP_NAME],
             instance_type=args["type"],
             dry_run=False)
-        instance_ids = [instance.instance_id for instance in reservation.instances]
+        instance_ids = [instance.id for instance in reservation.instances]
     print("Setting tags.")
     conn.create_tags(instance_ids, {"cluster-name": args["name"]})
     print("Launched instances:")
     for instance in instance_ids:
         if args["spot"] > 0.0:
-            print("{} (spot)".format(instance.id))
+            print("{} (spot)".format(instance))
         else:
-            print("{} (on demand)".format(instance.id))
+            print("{} (on demand)".format(instance))
     print("Done.")
 
 

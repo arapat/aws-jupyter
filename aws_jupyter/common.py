@@ -6,6 +6,7 @@ import yaml
 
 
 DEFAULT_AMI = "ami-08cf5e5716f79b01a"  # Jupyter-tmsn
+DEFAULT_REGION = "us-east-1"
 
 def load_config(args, config_path="~/.tmsn_config"):
     def load_credential(config):
@@ -30,6 +31,12 @@ def load_config(args, config_path="~/.tmsn_config"):
         else:
             args["ami"] = DEFAULT_AMI
         print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
+    if "region" not in args or args["region"] is None:
+        if "region" in config:
+            args["region"] = config["region"]
+        else:
+            args["region"] = DEFAULT_REGION
+        print("Region is not specified. Default region set to '{}'".format(args["region"]))
     warning = False
     output = ""
     for t in args:
