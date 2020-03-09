@@ -21,11 +21,15 @@ read
 
 echo
 echo "Step 2:  we now start a cluster using 2 spot instances"
-echo "Type [ENTER] to proceed"
-read
+echo "Type [ENTER] to proceed, or type 0 to skip"
+read input
 
 # STEP 2
-# aws-jupyter create -c 2 --spot 1.0
+if [[ $input == "0" ]]; then
+    echo "Skipped creating new instances"
+else
+    aws-jupyter create -c 2 --spot 1.0
+fi
 
 
 echo
