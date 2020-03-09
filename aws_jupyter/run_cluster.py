@@ -52,7 +52,7 @@ def run_cluster(args, first_node_only=False):
     stdout_path = "/tmp/stdout.log"
     stderr_path = "/tmp/stderr.log"
     if not check_connections(instances, args):
-        return
+        return False
     for url in instances:
         # Create base path
         command = ("ssh -o StrictHostKeyChecking=no -i {} ubuntu@{} "
@@ -89,6 +89,7 @@ def run_cluster(args, first_node_only=False):
             "or is finished.\n\n"
             "The stdout/stderr of the script has been redirected to the file {} and {} "
             "on the remote instances.".format(fullpath, stdout_path, stderr_path))
+    return True
 
 
 def main_run_cluster():
