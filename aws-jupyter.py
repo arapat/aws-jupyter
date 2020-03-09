@@ -6,6 +6,7 @@ from lib.run_cluster import main_run_cluster, run_cluster
 from lib.terminate_cluster import main_terminate_cluster
 from lib.set_config import main_set_config
 from lib.ssh_headnode import main_ssh_headnode
+from lib.retrieve_files import main_retrieve_files
 import argparse
 import sys
 
@@ -18,7 +19,8 @@ class AwsJupyter:
         )
         parser.add_argument(
             "task",
-            help="Task to perform, should be one of 'config', 'create', 'check', 'terminate'")
+            help="Task to perform, should be one of 'config', 'create', 'check', 'terminate', \
+                'run', 'ssh', 'retrieve'")
         config = parser.parse_args(sys.argv[1:2])
         if not hasattr(self, config.task):
             print("Error: Cannot reconize the task type '{}'.".format(config["task"]))
@@ -57,6 +59,9 @@ class AwsJupyter:
 
     def ssh(self):
         main_ssh_headnode()
+
+    def retrieve(self):
+        main_retrieve_files()
 
 if __name__ == '__main__':
     AwsJupyter()

@@ -47,6 +47,7 @@ def run_cluster(args):
     base_path = args["base_path"]
     fullpath, filename = parse_file_path(args["script"])
     remote_file_path = os.path.join(base_path, filename)
+    exec_command = f"cd {base_path}; {remote_file_path}"
     run_in_foreground = args["output"]
     stdout_path = "/tmp/stdout.log"
     stderr_path = "/tmp/stderr.log"
@@ -69,10 +70,10 @@ def run_cluster(args):
         command += (" ssh -o StrictHostKeyChecking=no -i {} ubuntu@{} "
                     "").format(key, url)
         if run_in_foreground:
-            command += "\"{}\"".format(remote_file_path)
+            command += "\"{}\"".format(exec_command)
         else:
             command += "\"{} > {} 2>{} < /dev/null\"".format(
-                remote_file_path, stdout_path, stderr_path)
+                exec_command, stdout_path, stderr_path)
             command = "({}) &".format(command)
 
         if run_in_foreground:

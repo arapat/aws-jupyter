@@ -2,6 +2,7 @@
 import argparse
 import os
 import subprocess
+import sys
 
 from lib.common import load_config
 from lib.common import check_connections
@@ -46,7 +47,7 @@ def retrieve_file(args):
     print("Done.")
 
 
-if __name__ == '__main__':
+def main_retrieve_files():
     parser = argparse.ArgumentParser(description="Retrieve the files from the instances of a cluster")
     parser.add_argument("--remote",
                         required=True,
@@ -58,7 +59,11 @@ if __name__ == '__main__':
                         help="Path of the local directory to download the remote files")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(sys.argv[2:]))
     args["neighbors"] = os.path.abspath("./neighbors.txt")
     config = load_config(args)
     retrieve_file(config)
+
+
+if __name__ == '__main__':
+    main_retrieve_files()
