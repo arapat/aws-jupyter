@@ -22,11 +22,17 @@ def create_default_security_group(conn):
     # Delete the default security group if it exists
     for sg in conn.get_all_security_groups():
         if sg.name == security_group_name:
-            sg.delete()
-            break
+            try:
+                sg.delete()
+                break
+            except:
+                pass
     # Create the new deafult security group
-    sg = conn.create_security_group(security_group_name, "for " + security_group_name)
-    sg.authorize("tcp", 0, 65535, "0.0.0.0/0")
+    try:
+        sg = conn.create_security_group(security_group_name, "for " + security_group_name)
+        sg.authorize("tcp", 0, 65535, "0.0.0.0/0")
+    except:
+        print(f"Warning: creating a new security group '{security_group_name}' failed")
 
 
 def create_cluster(args):
@@ -42,67 +48,38 @@ def create_cluster(args):
               "Note: If you want to check the status of the cluster '{}', ".format(args["name"]) +
               "please use `./aws-jupyter.py check` or `./check-cluster.py`.")
         return
-    credential = 'AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}"'.format(
-        args["aws_access_key_id"], args["aws_secret_access_key"])
 
     # TODO: removed "--associate-public-ip-address" from the options, check if things still work
-    create_command = """
-    {} aws ec2 run-instances \
-        --region {} \
-        --image-id {} \
-        --count {} \
-        --instance-type {} \
-        --key-name {} \
-        --tag-specifications 'ResourceType=instance,Tags=[{{Key=cluster-name,Value={}}}]' \
-        --block-device-mappings \
-            '[{{\"DeviceName\":\"/dev/xvdb\",\"VirtualName\":\"ephemeral0\"}}, \
-              {{\"DeviceName\":\"/dev/xvdc\",\"VirtualName\":\"ephemeral1\"}}]' \
-        --security-groups aws-jupyter \
-        --no-dry-run
-    """.format(
-        credential,
-        args["region"],
-        args["ami"],
-        args["count"],
-        args["type"],
-        args["key"],
-        args["name"]
-    )
-    if not args["ondemand"]:
-        create_command = create_command.strip() + \
-            """ --instance-market-options 'MarketType=spot,SpotOptions={MaxPrice='3.0'}'"""
+    print("Creating the cluster...")
+    if args["ondemand"]:
         print("We will use spot instances.")
+        reservation = conn.request_spot_instances(
+            price=3.0,
+            image_id=args["ami"],
+            count=args["count"],
+            type='one-time',
+            key_name=args["key"],
+            security_groups=["aws-jupyter"],
+            instance_type=args["type"],
+            dry_run=False)
     else:
         print("We will use on-demand instances.")
-    print("Creating the cluster...")
-    p = subprocess.run(create_command, shell=True, check=True, stdout=subprocess.PIPE)
-    output = json.loads(p.stdout)
+        reservation = conn.run_instances(
+            args["ami"],
+            min_count=args["count"],
+            max_count=args["count"],
+            key_name=args["key"],
+            security_groups=["aws-jupyter"],
+            instance_type=args["type"],
+            dry_run=False)
     print("Launched instances:")
-    for instance in output["Instances"]:
+    for instance in reservation.instances:
+        instance.add_tag("cluster-name", args["name"])
         if args["ondemand"]:
-            print("{} (on demand)".format(instance["InstanceId"]))
+            print("{} (on demand)".format(instance.id))
         else:
-            print("{} ({})".format(instance["InstanceId"], instance["InstanceLifecycle"]))
-    print()
-
-    setup_security_group = """
-    {} aws ec2 authorize-security-group-ingress \
-        --region {} \
-        --group-name default \
-        --protocol tcp \
-        --port 8888 \
-        --cidr 0.0.0.0/0;
-    {} aws ec2 authorize-security-group-ingress \
-        --region {} \
-        --group-name default \
-        --protocol tcp \
-        --port 22 \
-        --cidr 0.0.0.0/0;
-    """.format(credential, args["region"], credential, args["region"])
-    print("Setting up security group...")
-    subprocess.run(setup_security_group, shell=True,
-                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print("Done.")
+            print("{} ({})".format(instance.id, instance.state))
+    print("\nDone.")
 
 
 def main_create_cluster():
