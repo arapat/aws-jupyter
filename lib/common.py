@@ -51,14 +51,17 @@ def load_config(args, config_path="~/.tmsn_config"):
         print()
     # Check the credential file
     if "credential" not in config or not config["credential"]:
-        print("Error: Please provide the path to the credential file.")
-        sys.exit(1)
+        print("Warning: Please provide the path to the credential file.")
+        config["credential"] = ""
     config["credential"] = os.path.abspath(config["credential"])
     # Save the configuration
     with open(config_path, 'w') as f:
         yaml.dump(config, f)
     # Load credential
-    load_credential(config)
+    try:
+        load_credential(config)
+    except:
+        print("Warning: Failed to load credential.")
     return config
 
 

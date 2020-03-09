@@ -4,6 +4,7 @@ import argparse
 import subprocess
 import sys
 import json
+from time import sleep
 
 from lib.common import load_config
 from lib.common import query_status
@@ -51,10 +52,11 @@ def create_cluster(args):
 
     # TODO: removed "--associate-public-ip-address" from the options, check if things still work
     print("Creating the cluster...")
-    if args["ondemand"]:
+    if args["spot"] > 0.0:
         print("We will use spot instances.")
         reservation = conn.request_spot_instances(
-            price=3.0,
+            price=float(args["spot"]),
+            placement=f"{args['region']}c",
             image_id=args["ami"],
             count=args["count"],
             type='one-time',
@@ -62,6 +64,24 @@ def create_cluster(args):
             security_groups=["aws-jupyter"],
             instance_type=args["type"],
             dry_run=False)
+        request_ids = [r.id for r in reservation]
+        print("Please wait till the spot instances are fullfilled", end='')
+        i = 0
+        instance_ids = []
+        while i < len(request_ids):
+            request_id = request_ids[i]
+            spot_req = conn.get_all_spot_instance_requests(request_ids=[request_id])[0]
+            if spot_req.state == 'failed':
+                print("\nError: Spot request failed")
+                # TODO: cancel the spot request
+                sys.exit(1)
+            if not spot_req.instance_id:
+                print(".", end='')
+                sleep(2)
+                continue
+            instance_ids.append(spot_req.instance_id)
+            i += 1
+        print()
     else:
         print("We will use on-demand instances.")
         reservation = conn.run_instances(
@@ -72,14 +92,16 @@ def create_cluster(args):
             security_groups=["aws-jupyter"],
             instance_type=args["type"],
             dry_run=False)
+        instance_ids = [instance.instance_id for instance in reservation.instances]
+    print("Setting tags.")
+    conn.create_tags(instance_ids, {"cluster-name": args["name"]})
     print("Launched instances:")
-    for instance in reservation.instances:
-        instance.add_tag("cluster-name", args["name"])
-        if args["ondemand"]:
-            print("{} (on demand)".format(instance.id))
+    for instance in instance_ids:
+        if args["spot"] > 0.0:
+            print("{} (spot)".format(instance.id))
         else:
-            print("{} ({})".format(instance.id, instance.state))
-    print("\nDone.")
+            print("{} (on demand)".format(instance.id))
+    print("Done.")
 
 
 def main_create_cluster():
@@ -102,6 +124,10 @@ def main_create_cluster():
                          help="AMI type")
     parser.add_argument("--credential",
                         help="path to the credential file")
+    parser.add_argument("--spot",
+                        help="the max price for spot instances, if not set, \
+                        will use on-demand instances",
+                        type=float)
     args = vars(parser.parse_args(sys.argv[2:]))
     if args["ami"] is None:
         print("AMI is not specified. Default AMI set to '{}'".format(DEFAULT_AMI))
@@ -110,6 +136,8 @@ def main_create_cluster():
         print("Instance type is not specified. Default instance type set to '{}'".format(
             DEFAULT_TYPE))
         args["type"] = DEFAULT_TYPE
+    if args["spot"] is None:
+        args["spot"] = 0.0
     config = load_config(args)
     create_cluster(config)
 
