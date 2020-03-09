@@ -92,7 +92,7 @@ def run_cluster(args):
 def main_run_cluster():
     parser = argparse.ArgumentParser(
         description="Run a script on all instances of a cluster",
-        usage="aws-jupyter.py run [<args>]",
+        usage="aws-jupyter run [<args>]",
     )
     parser.add_argument("-s", "--script",
                         required=True,

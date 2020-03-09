@@ -35,7 +35,7 @@ def ssh_headnode(args):
 def main_ssh_headnode():
     parser = argparse.ArgumentParser(
         description="SSH into the head node of a cluster",
-        usage="aws-jupyter.py config <args>",
+        usage="aws-jupyter config <args>",
     )
     parser.add_argument("--name",
                         required=False,

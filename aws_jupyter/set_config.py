@@ -6,7 +6,7 @@ from .common import load_config
 def main_set_config():
     parser = argparse.ArgumentParser(
         description="Set aws-jupyter configurations",
-        usage="aws-jupyter.py config <args>",
+        usage="aws-jupyter config <args>",
     )
     parser.add_argument("--region",
                         help="region name")

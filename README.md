@@ -108,7 +108,7 @@ configuration files, one for each worker, and save all configuration files in th
 (e.g. `./example-configs/`). After that, run following command
 
 ```bash
-./lib/send-configs.py --config ./example-configs/
+aws-jupyter send-configs --config ./example-configs/
 ```
 
 
@@ -122,5 +122,6 @@ to this sub-directory.
 
 ### Example
 ```bash
-./lib/retrieve-files.py --remote /home/ubuntu/workspace/rust-tmsn/output.txt --local ./_result/
+mkdir _result
+aws-jupyter retrieve --remote /tmp/std* --local ./_result/
 ```

@@ -45,15 +45,9 @@ aws-jupyter ssh --name jupyter
 
 ## Setup and Diagnose
 
-1. To install awscli tool and upload the credentials to the instances, run
+1. Print diagnose information to debugging
 
 ```bash
-./aws_jupyter/setup-cluster.py --name jupyter
+aws-jupyter diagnose
 ```
 
-
-2. Print diagnose information to debugging
-
-```bash
-./aws_jupyter/diagnose.py
-```

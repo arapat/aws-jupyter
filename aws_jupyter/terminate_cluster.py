@@ -56,7 +56,7 @@ def terminate_cluster(args):
 def main_terminate_cluster():
     parser = argparse.ArgumentParser(
         description="Terminate a cluster",
-        usage="aws-jupyter.py config <args>",
+        usage="aws-jupyter config <args>",
     )
     parser.add_argument("--name",
                         required=False,

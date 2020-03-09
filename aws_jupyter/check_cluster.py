@@ -48,7 +48,7 @@ def check_cluster(args):
 def main_check_cluster():
     parser = argparse.ArgumentParser(
         description="Check the status of a cluster",
-        usage="aws-jupyter.py check <args>",
+        usage="aws-jupyter check <args>",
     )
     parser.add_argument("--name",
                         required=False,

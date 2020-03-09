@@ -2,6 +2,7 @@
 import argparse
 import os
 import subprocess
+import sys
 
 from .common import load_config
 from .common import check_connections
@@ -55,7 +56,7 @@ def send_configs(args):
     print("Done.")
 
 
-if __name__ == '__main__':
+def main_send_configs():
     parser = argparse.ArgumentParser(
         description="Send a different configuration file to each instance of a cluster")
     parser.add_argument("--config",
@@ -63,8 +64,12 @@ if __name__ == '__main__':
                         help="Path of the directory that contains all configuration files")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    args = vars(parser.parse_args())
+    args = vars(parser.parse_args(sys.argv[2:]))
     args["neighbors"] = os.path.abspath("./neighbors.txt")
     args["base_path"] = "/home/ubuntu/workspace"
     config = load_config(args)
     send_configs(config)
+
+
+if __name__ == '__main__':
+    main_send_configs()

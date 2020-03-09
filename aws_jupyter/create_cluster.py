@@ -12,17 +12,16 @@ from .common import DEFAULT_AMI
 
 
 DEFAULT_TYPE = "m3.xlarge"
+SECURITY_GROUP_NAME = "aws-jupyter"
 
 
 def create_default_security_group(conn):
     '''
     Create a default security group
     '''
-    security_group_name = "aws-jupyter"
-
     # Delete the default security group if it exists
     for sg in conn.get_all_security_groups():
-        if sg.name == security_group_name:
+        if sg.name == SECURITY_GROUP_NAME:
             try:
                 sg.delete()
                 break
@@ -30,10 +29,10 @@ def create_default_security_group(conn):
                 pass
     # Create the new deafult security group
     try:
-        sg = conn.create_security_group(security_group_name, "for " + security_group_name)
+        sg = conn.create_security_group(SECURITY_GROUP_NAME, "for " + SECURITY_GROUP_NAME)
         sg.authorize("tcp", 0, 65535, "0.0.0.0/0")
     except:
-        print(f"Warning: creating a new security group '{security_group_name}' failed")
+        print(f"Warning: creating a new security group '{SECURITY_GROUP_NAME}' failed")
 
 
 def create_cluster(args):
@@ -47,7 +46,7 @@ def create_cluster(args):
         print("Error: A cluster with the name '{}' exists. ".format(args["name"]) +
               "Please choose a different cluster name.\n" +
               "Note: If you want to check the status of the cluster '{}', ".format(args["name"]) +
-              "please use `./aws-jupyter.py check` or `./check-cluster.py`.")
+              "please use `aws-jupyter check`.")
         return
 
     # TODO: removed "--associate-public-ip-address" from the options, check if things still work
@@ -61,7 +60,7 @@ def create_cluster(args):
             count=args["count"],
             type='one-time',
             key_name=args["key"],
-            security_groups=["aws-jupyter"],
+            security_groups=[SECURITY_GROUP_NAME],
             instance_type=args["type"],
             dry_run=False)
         request_ids = [r.id for r in reservation]
@@ -89,7 +88,7 @@ def create_cluster(args):
             min_count=args["count"],
             max_count=args["count"],
             key_name=args["key"],
-            security_groups=["aws-jupyter"],
+            security_groups=[SECURITY_GROUP_NAME],
             instance_type=args["type"],
             dry_run=False)
         instance_ids = [instance.instance_id for instance in reservation.instances]
@@ -107,7 +106,7 @@ def create_cluster(args):
 def main_create_cluster():
     parser = argparse.ArgumentParser(
         description="Crate a cluster using AWS spot instances",
-        usage="aws-jupyter.py create [<args>]",
+        usage="aws-jupyter create [<args>]",
     )
     parser.add_argument("-c", "--count",
                         required=True,
