@@ -3,10 +3,16 @@ Please read [README](README.md) for the detailed documentation.
 
 ## Run Jupyter on AWS
 
+0. Check configuration
+
+```bash
+aws-jupyter config
+```
+
 1. Start the cluster
 
 ```bash
-./aws-jupyter.py create -c 1 --name jupyter
+aws-jupyter create -c 1 --name jupyter
 ```
 
 To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation command above.
@@ -14,13 +20,13 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 2. Check the cluster is up
 
 ```bash
-./aws-jupyter.py check --name jupyter
+aws-jupyter check --name jupyter
 ```
 
 3. Run the setup script on the cluster
 
 ```bash
-./aws-jupyter.py run -s script-examples/install-jupyter.sh --output
+aws-jupyter run -s script-examples/install-jupyter.sh --output
 ```
 
 4. Open the URL printed out in the Step 3.
@@ -28,13 +34,13 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 5. Shut down the instance
 
 ```bash
-./aws-jupyter.py terminate --name jupyter
+aws-jupyter terminate --name jupyter
 ```
 
 6. To SSH into the first node, run
 
 ```bash
-./aws-jupyter.py ssh --name jupyter
+aws-jupyter ssh --name jupyter
 ```
 
 ## Setup and Diagnose
