@@ -1,0 +1,68 @@
+echo
+echo "Step 1:  we will set up the configuration."
+echo "For now please make sure set the region to \"us-east-1\"."
+echo "Type [ENTER] to proceed"
+read
+
+# STEP 1
+aws-jupyter config
+
+credential=$(cat ~/.tmsn_config | grep "credential" | awk -F\  '{print $NF}')
+echo "We created \"~/.tmsn_config\" to remember the default configuration."
+echo "Please double check below and make sure the SSH key pair is located in \"us-east-1\""
+echo
+echo "Your SSH key pair name is"
+cat $credential | grep key_name | awk -F: '{print $NF}'
+echo "Your SSH key is located at"
+cat $credential | grep ssh_key | awk -F: '{print $NF}'
+echo
+echo "Type [ENTER] to proceed"
+read
+
+echo
+echo "Step 2:  we now start a cluster using 2 spot instances"
+echo "Type [ENTER] to proceed"
+read
+
+# STEP 2
+# aws-jupyter create -c 2 --spot 1.0
+
+
+echo
+echo "Step 3:  we will check if the cluster is up. If not, we need to wait a few minutes."
+echo "Please keep this script running during the process"
+echo "Type [ENTER] to proceed"
+read
+
+
+while true; do
+    # STEP 3
+    aws-jupyter check
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    echo "Not ready. Will re-try in 2 seconds."
+    sleep 2
+done
+
+
+echo
+echo "Now you can open the URL printed out above to use the Jupyter notebook"
+echo
+echo "To shut down the cluster later, just run \"aws-jupyter terminate\""
+echo "If there is a connection issue, run \"aws-jupyter diagnose\", and send us the output"
+echo "Type [ENTER] to load the exmaple for running tmsn"
+read
+
+
+echo
+echo "To run the tmsn example, use the following steps"
+filename=$(python -c "import aws_jupyter, os; path = os.path.join(os.path.dirname(aws_jupyter.__file__), \"examples\"); print(os.path.join(path, \"tmsn-example.py\"))")
+echo "    # run the script"
+echo "    aws-jupyter run -s $filename"
+echo "    # retrieve the output from the cluster"
+echo "    mkdir _files"
+echo "    aws-jupyter retrieve --remote /tmp/std* --local _files"
+echo "    # check the output"
+echo "    cat _files/worker-0/stdout.log"
+echo "    cat _files/worker-1/stdout.log"

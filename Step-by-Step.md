@@ -3,6 +3,8 @@ Please read [README](README.md) for the detailed documentation.
 
 ## Run Jupyter on AWS
 
+You can also try this example by running `launch-aws-jupyter` in the command line.
+
 0. Check configuration
 
 ```bash
@@ -23,15 +25,9 @@ To speicify a custom AMI image, append "--ami <ami_id>" to the cluster creation 
 aws-jupyter check --name jupyter
 ```
 
-3. Run the setup script on the cluster
+3. Open the URL printed out in the Step 3.
 
-```bash
-aws-jupyter run -s script-examples/install-jupyter.sh --output
-```
-
-4. Open the URL printed out in the Step 3.
-
-5. Shut down the instance
+4. Shut down the instance
 
 ```bash
 aws-jupyter terminate --name jupyter
@@ -41,6 +37,28 @@ aws-jupyter terminate --name jupyter
 
 ```bash
 aws-jupyter ssh --name jupyter
+```
+
+## Run tmsn
+
+1. First run the tmsn example
+
+```bash
+aws-jupyter run -s examples/tmsn-example.py
+```
+
+2. Retrieve outputs from the nodes in the cluster
+
+```bash
+mkdir _files
+aws-jupyter retrieve --remote /tmp/std* --local _files
+```
+
+3. Check the outputs
+
+```bash
+cat _files/worker-0/stdout.log
+cat _files/worker-1/stdout.log
 ```
 
 ## Setup and Diagnose

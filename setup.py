@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='aws-jupyter',
-    version='0.1.4',
-    scripts=['aws-jupyter'] ,
+    version='0.1.5',
+    scripts=['aws-jupyter', 'launch-aws-jupyter'] ,
     author="Julaiti Alafate",
     author_email="jalafate@gmail.com",
     description="Launch Jupyter notebook on AWS",

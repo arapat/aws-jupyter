@@ -16,7 +16,7 @@ def parse_file_path(path):
     return (path, path.rsplit('/', 1)[1])
 
 
-def run_cluster(args):
+def run_cluster(args, first_node_only=False):
     args["neighbors"] = os.path.abspath("./neighbors.txt")
     args["base_path"] = "/home/ubuntu/workspace"
 
@@ -80,6 +80,8 @@ def run_cluster(args):
             print()
         print("Running on '{}'".format(url))
         subprocess.run(command, shell=True, check=True)
+        if first_node_only:
+            break
 
     if not run_in_foreground:
         print("\nThe script '{}' has been started in the background on all instances. "

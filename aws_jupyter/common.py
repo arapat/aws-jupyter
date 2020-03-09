@@ -42,7 +42,9 @@ def load_config(args, config_path="~/.tmsn_config"):
     for t in args:
         if t not in config or args[t] is not None:
             config[t] = args[t]
-        if config[t] is None:
+        if config[t] is None and \
+                t in ["ami", "aws_access_key_id", "aws_secret_access_key", "credential",
+                      "key", "key_path", "region"]:
             output += "{}:\t{} (WARNING)\n".format(t, config[t])
             warning = True
         else:
