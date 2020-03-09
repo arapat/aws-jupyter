@@ -28,6 +28,8 @@ def run_cluster(args):
         return
     if "files" not in args or args["files"] is None:
         args["files"] = []
+    if "files" is str:
+        args["files"] = [args["files"]]
     for filepath in args["files"]:
         if not check_exists(filepath):
             print("Error: File '{}' does not exist.".format(filepath))
