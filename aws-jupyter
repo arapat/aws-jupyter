@@ -53,7 +53,7 @@ class AwsJupyter:
             config["files"] = ["./neighbors.txt"]
             config["script"] = os.path.join(script_dir, "install-jupyter-tmsn.sh")
             config["output"] = True
-            is_worked = run_cluster(config, first_node_only=True)
+            is_worked = run_cluster(config, first_node_only=False)
             if not is_worked:
                 sys.exit(1)
         elif total > 0:
