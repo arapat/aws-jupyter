@@ -26,7 +26,7 @@ class AwsJupyter:
             help="Task to perform, should be one of 'config', 'create', 'check', 'terminate', \
                 'run', 'ssh', 'retrieve', 'send-configs', 'diagnose'")
         config = parser.parse_args(sys.argv[1:2])
-        task = config.task.replace('_', '-')
+        task = config.task.replace('-', '_')
         if not hasattr(self, task):
             print("Error: Cannot reconize the task type '{}'.".format(config["task"]))
             parser.print_help()
