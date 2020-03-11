@@ -10,6 +10,14 @@ Pleasure ensure you have Python 3. `aws-jupyter` can be install using `pip`:
 pip install aws-jupyter
 ```
 
+After the installation, you can try it out using the example launch script:
+
+```
+launch-aws-jupyter
+```
+
+It will create a cluster with 2 spot instances.
+
 In addition,
 we create the EC2 instances using an AMI image that located in the region `us-east-1`.
 So please make sure that your local environment is set up to use that region
