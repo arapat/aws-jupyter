@@ -204,6 +204,6 @@ optional arguments:
 ```
 
 
-## `aws-jupyter --help`
+## Print help message
 
-Print the help message
+`aws-jupyter --help`
