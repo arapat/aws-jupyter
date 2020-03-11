@@ -4,6 +4,44 @@
 install Jupyter and [tmsn](https://github.com/arapat/tmsn) on the instances, and terminate the
 instances.
 
+## Credential files
+
+First of all, create a credential file in the YAML format:
+
+```
+any_name_you_like:
+    key_name: your_aws_key_pair_name
+    ssh_key: /path/to/the/aws/key/file
+    access_key_id: your_aws_key_id
+    secret_access_key: your_aws_secret_access_key
+```
+
+Save this file to a secure location, and set the location of this file as the value of the
+`--credential` argument (read below).
+
+For example, your credential file might look like this:
+
+```
+> cat ./aws-jupyter-credential.yml
+my_main_project:
+    key_name: my-aws-key
+    ssh_key: /home/casey/vault/my-aws-key.pem
+    access_key_id: WOIPODOJOJDAAXXIOJQWE
+    secret_access_key: sDurjb4402948-e859+9289rEzzeoi778z98fe1q
+```
+
+The file provides two types of access tokens to your AWS account,
+
+* your security credentials; learn how to create one at
+[Managing Access Keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey)
+* your EC2 key pair; learn how to create one at
+[Creating a Key Pair Using Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
+
+The EC2 key pairs are region-specific: you cannot create EC2 instances in `us-east-1`
+using a key pair created in `us-west-1`.
+At this moment, `aws-jupyter` only supports the `us-east-1` region.
+
+
 ## Supported commands
 
 `aws-jupyter` supports following commands:
