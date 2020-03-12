@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='aws-jupyter',
-    version='0.1.10',
+    version='0.1.11',
     scripts=['aws-jupyter', 'launch-aws-jupyter'] ,
     author="Julaiti Alafate",
     author_email="jalafate@gmail.com",
