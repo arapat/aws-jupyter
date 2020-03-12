@@ -20,7 +20,7 @@ launch-aws-jupyter
 It will create a cluster with 2 spot instances.
 
 In addition,
-we create the EC2 instances using an AMI image that located in the region `us-east-1`.
+we create the EC2 instances using an AMI image that located in the region `us-west-2`.
 So please make sure that your local environment is set up to use that region
 (you can run `aws-jupyter config` to verify the setting).
 

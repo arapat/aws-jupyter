@@ -9,6 +9,7 @@ from time import sleep
 from .common import load_config
 from .common import query_status
 from .common import DEFAULT_AMI
+from .common import DEFAULT_REGION
 
 
 DEFAULT_TYPE = "m3.xlarge"
@@ -138,7 +139,11 @@ def main_create_cluster():
     if args["spot"] is None:
         args["spot"] = 0.0
     config = load_config(args)
-    create_cluster(config)
+    if args["region"] != DEFAULT_REGION:
+        print("We only support {} region. Please change the configuration by running \
+                `aws-jupyter config`.".format(DEFAULT_REGION))
+    else:
+        create_cluster(config)
 
 
 if __name__ == '__main__':

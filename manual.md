@@ -39,7 +39,7 @@ The file provides two types of access tokens to your AWS account,
 
 The EC2 key pairs are region-specific: you cannot create EC2 instances in `us-east-1`
 using a key pair created in `us-west-1`.
-At this moment, `aws-jupyter` only supports the `us-east-1` region.
+At this moment, `aws-jupyter` only supports the `us-west-2` region.
 
 
 ## Supported commands

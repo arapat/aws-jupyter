@@ -1,6 +1,6 @@
 echo
 echo "Step 1:  we will set up the configuration."
-echo "For now please make sure set the region to \"us-east-1\"."
+echo "For now please make sure set the region to \"us-west-2\"."
 echo "Type [ENTER] to proceed"
 read
 
@@ -9,7 +9,7 @@ aws-jupyter config
 
 credential=$(cat ~/.tmsn_config | grep "credential" | awk -F\  '{print $NF}')
 echo "We created \"~/.tmsn_config\" to remember the default configuration."
-echo "Please double check below and make sure the SSH key pair is located in \"us-east-1\""
+echo "Please double check below and make sure the SSH key pair is located in \"us-west-2\""
 echo
 echo "Your SSH key pair name is"
 cat $credential | grep key_name | awk -F: '{print $NF}'
