@@ -5,6 +5,7 @@ import subprocess
 import sys
 import json
 from time import sleep
+from boto.exception import EC2ResponseError
 
 from .common import load_config
 from .common import query_status
@@ -70,7 +71,12 @@ def create_cluster(args):
         instance_ids = []
         while i < len(request_ids):
             request_id = request_ids[i]
-            spot_req = conn.get_all_spot_instance_requests(request_ids=[request_id])[0]
+            try:
+                spot_req = conn.get_all_spot_instance_requests(request_ids=[request_id])[0]
+            except EC2ResponseError:
+                print(";", end='')
+                sleep(2)
+                continue
             if spot_req.state == 'failed':
                 print("\nError: Spot request failed")
                 # TODO: cancel the spot request
