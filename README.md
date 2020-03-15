@@ -27,6 +27,17 @@ So please make sure that your local environment is set up to use that region
 After installation, please run `aws-jupyter config` to make sure the configuration is properly set.
 
 
+## Upgrade
+
+In case we change the default AWS region, please upgrade `aws-jupyter` in 3 steps:
+
+1. Upgrade the package: `pip install --upgrade aws-jupyter`.
+2. Create the new key pair in the new AWS region, and modify the "key_name" and "ssh_key" fields of
+the credential file accordingly (read below).
+3. Switch to default AMI and region: `aws-jupyter config --default-ami --default-region`, and set the credential file
+to the location of the new one when prompted.
+
+
 ### AWS Credential
 
 The scripts in this repository requires a `credentials.yml` file in following format:
