@@ -41,8 +41,23 @@ def load_config(args, config_path="~/.tmsn_config"):
     warning = False
     output = ""
     for t in args:
-        if t not in config or args[t] is not None:
+        if args[t] is not None or t not in config:
             config[t] = args[t]
+    # Check the credential file
+    if "credential" not in config or not config["credential"]:
+        print("Warning: Please provide the path to the credential file.")
+        config["credential"] = ""
+    config["credential"] = os.path.abspath(config["credential"])
+    # Load credential
+    try:
+        load_credential(config)
+    except:
+        print("Warning: Failed to load credential.")
+    # Save the configuration
+    with open(config_path, 'w') as f:
+        yaml.dump(config, f)
+    # Print arguments
+    for t in config:
         if config[t] is None and \
                 t in ["ami", "aws_access_key_id", "aws_secret_access_key", "credential",
                       "key", "key_path", "region"]:
@@ -50,7 +65,6 @@ def load_config(args, config_path="~/.tmsn_config"):
             warning = True
         else:
             output += "{}:\t{}\n".format(t, config[t])
-    # Print arguments
     print()
     print('=' * 3, "Configuration", '=' * 3)
     print(output)
@@ -59,19 +73,6 @@ def load_config(args, config_path="~/.tmsn_config"):
         print("WARN: Please check the configurations with the (WARNING) suffix above.")
         print('-' * 10)
         print()
-    # Check the credential file
-    if "credential" not in config or not config["credential"]:
-        print("Warning: Please provide the path to the credential file.")
-        config["credential"] = ""
-    config["credential"] = os.path.abspath(config["credential"])
-    # Save the configuration
-    with open(config_path, 'w') as f:
-        yaml.dump(config, f)
-    # Load credential
-    try:
-        load_credential(config)
-    except:
-        print("Warning: Failed to load credential.")
     return config
 
 
