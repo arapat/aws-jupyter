@@ -45,7 +45,7 @@ At this moment, `aws-jupyter` only supports the `us-west-2` region.
 ## Supported commands
 
 `aws-jupyter` supports following commands:
-"config", "create", "check", "terminate", "run", "ssh", "retrieve", "send-configs", "diagnose".
+"config", "access", "create", "check", "terminate", "run", "ssh", "retrieve", "send-configs", "diagnose".
 
 ## Set basic configurations
 
@@ -69,6 +69,12 @@ optional arguments:
 It stores the last configuration parameters and reuse them for next time, for example,
 you can create a cluster with `aws-jupyter create --name test-cluster`, and check it
 status by running `aws-jupyter check` instead of `aws-jupyter check --name test-cluster`.
+
+## Check if AWS access credentials work
+
+`> aws-jupyter access`
+
+Check if the AWS credentials work. If not, we will print an error message.
 
 
 ## Create a cluster using EC2 instances
