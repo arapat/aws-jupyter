@@ -27,9 +27,11 @@ class AwsJupyter:
             help="Task to perform, should be one of 'config', 'access', 'create', 'check', \
                 'terminate', 'run', 'ssh', 'retrieve', 'send-configs', 'diagnose'")
         config = parser.parse_args(sys.argv[1:2])
-        task = config.task.replace('-', '_')
+        raw_task = config.task
+        task = raw_task.replace('-', '_')
         if not hasattr(self, task):
-            print("Error: Cannot reconize the task type '{}'.".format(config["task"]))
+            print(config)
+            print("Error: Cannot reconize the task type '{}'.".format(raw_task))
             parser.print_help()
             exit(1)
         # use dispatch pattern to invoke method with same name
@@ -39,7 +41,8 @@ class AwsJupyter:
         main_set_config()
 
     def create(self):
-        main_create_cluster()
+        if main_check_access():
+            main_create_cluster()
 
     def check(self):
         (config, status) = main_check_cluster()

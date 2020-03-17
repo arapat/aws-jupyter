@@ -13,7 +13,7 @@ def check_exists(path):
 
 
 def parse_file_path(path):
-    return (path, path.rsplit('/', 1)[1])
+    return (path, os.path.basename(path))
 
 
 def run_cluster(args, first_node_only=False):

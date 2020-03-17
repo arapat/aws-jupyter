@@ -145,3 +145,21 @@ to this sub-directory.
 mkdir _result
 aws-jupyter retrieve --remote /tmp/std* --local ./_result/
 ```
+
+## Install a package on all instances
+
+You can install any missing packages by following these step:
+
+1. create a script on your local computer, which install the required package. For example, assume we want to install `pandas`,
+
+```bash
+$ echo "pip install pandas" > install-pandas.sh
+````
+
+2. run the script on all instances
+
+```bash
+aws-jupyter run -s install-pandas.sh --output
+```
+
+The `--output` argument ensures that the script will run in foreground, so that you can check if the installation succeed.

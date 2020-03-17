@@ -21,12 +21,14 @@ def check_access(args):
         print("Access credentials are invalid: {}".format(e.reason))
         print("aws_access_key_id={}".format(args["aws_access_key_id"]))
         print("aws_secret_access_key={}".format(args["aws_secret_access_key"]))
+        return False
+    return True
 
 
 def main_check_access():
     argparse.ArgumentParser(description="Check if the access credentials of AWS is valid")
     config = load_config({})
-    check_access(config)
+    return check_access(config)
 
 
 if __name__ == '__main__':
