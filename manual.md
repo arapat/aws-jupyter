@@ -141,10 +141,16 @@ optional arguments:
 `> aws-jupyter run`
 
 Run a script on all instances of a cluster. It uploads your script (as specified by the `-s` parameter)
-and starts it on all the EC2 instances. Note that it doesn't check if the script started successfully,
+and starts it on all the EC2 instances.
+
+By default, it doesn't check if the script started successfully,
 neither does it wait till the scripts to finish. It will, however, redirect the stderr and stdout
 of the scripts to `/tmp/stdout` and `/tmp/stderr`. Later, you can retrieve these two files
 using the `aws-jupyter retrieve` command (see below) and check the script output.
+
+If the `--output` argument is set, the scripts will run on the EC2 instances sequentially (i.e. the
+script does not launch on the next instance until the current one finished executing). Furthermore,
+it will print the script output to the commandline directly.
 
 ```
 usage: aws-jupyter run [<args>]
