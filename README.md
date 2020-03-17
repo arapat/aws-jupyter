@@ -148,7 +148,7 @@ aws-jupyter retrieve --remote /tmp/std* --local ./_result/
 
 ## Install a package on all instances
 
-You can install any missing packages by following these step:
+You can install any missing packages *after the instances are ready* (i.e. `aws-jupyter check` shows Jupyter notebook URL) by following these step:
 
 1. create a script on your local computer, which install the required package. For example, assume we want to install `pandas`,
 
