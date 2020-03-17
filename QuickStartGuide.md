@@ -1,9 +1,12 @@
-This is a step-by-step guide for running Jupyter on AWS.
-Please read [README](README.md) for the detailed documentation.
+This is a quick-start guide for running Jupyter on AWS.
+It is an example to show what you can do with `aws-jupyter`.
+You can also try this example by running `launch-aws-jupyter` in the command line,
+which will prompt a step-by-step guide to walk you through this example.
+
+Please read [README](README.md) for more information.
+
 
 ## Run Jupyter on AWS
-
-You can also try this example by running `launch-aws-jupyter` in the command line.
 
 0. Check configuration
 

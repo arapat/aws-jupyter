@@ -1,7 +1,7 @@
 This script launches a cluster on AWS EC2 instances and starts a Jupyter notebook on them.
 
-For the quick-start guide, see [Step-by-Step.md](Step-by-Step.md), or read the [manual](manual.md) for all supported
-commands.
+Please read the [manual](manual.md) for the details of all supported commands.
+[QuickStartGuide.md](QuickStartGuide.md) offers a guided example to show what `aws-jupyter` can do.
 
 ## Install
 
