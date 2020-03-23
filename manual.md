@@ -83,6 +83,8 @@ Check if the AWS credentials work. If not, we will print an error message.
 
 Crate a cluster using AWS spot instances
 
+If the instance comes with attached SSD, it will be mounted to `/mnt`.
+
 ```
 usage: aws-jupyter create [<args>]
 
