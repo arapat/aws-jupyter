@@ -5,6 +5,8 @@ import subprocess
 import sys
 import json
 from time import sleep
+from boto.ec2.blockdevicemapping import BlockDeviceType
+from boto.ec2.blockdevicemapping import BlockDeviceMapping
 from boto.exception import EC2ResponseError
 
 from .common import load_config
@@ -53,6 +55,13 @@ def create_cluster(args):
 
     # TODO: removed "--associate-public-ip-address" from the options, check if things still work
     print("Creating the cluster...")
+    # Declare the block device mapping for ephemeral disks
+    # TODO: adjust mount points, read this: https://cloudinit.readthedocs.io/en/latest/topics/examples.html#adjust-mount-points-mounted
+    device_mapping = BlockDeviceMapping()
+    for i in range(24):
+        eph = BlockDeviceType()
+        eph.ephemeral_name = 'ephemeral%d' % i
+        device_mapping['/dev/sd{}'.format(chr(ord('b') + i))] = eph
     if args["spot"] > 0.0:
         print("We will use spot instances.")
         try:
@@ -65,6 +74,7 @@ def create_cluster(args):
                 key_name=args["key"],
                 security_groups=[SECURITY_GROUP_NAME],
                 instance_type=args["type"],
+                block_device_map=device_mapping,
                 dry_run=False)
         except EC2ResponseError as e:
             err_msg = e.message
@@ -106,6 +116,7 @@ def create_cluster(args):
                 key_name=args["key"],
                 security_groups=[SECURITY_GROUP_NAME],
                 instance_type=args["type"],
+                block_device_map=device_mapping,
                 dry_run=False)
         except EC2ResponseError as e:
             err_msg = e.message
