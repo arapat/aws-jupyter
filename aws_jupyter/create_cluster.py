@@ -55,16 +55,24 @@ def create_cluster(args):
     print("Creating the cluster...")
     if args["spot"] > 0.0:
         print("We will use spot instances.")
-        reservation = conn.request_spot_instances(
-            price=float(args["spot"]),
-            placement=f"{args['region']}c",
-            image_id=args["ami"],
-            count=args["count"],
-            type='one-time',
-            key_name=args["key"],
-            security_groups=[SECURITY_GROUP_NAME],
-            instance_type=args["type"],
-            dry_run=False)
+        try:
+            reservation = conn.request_spot_instances(
+                price=float(args["spot"]),
+                placement=f"{args['region']}c",
+                image_id=args["ami"],
+                count=args["count"],
+                type='one-time',
+                key_name=args["key"],
+                security_groups=[SECURITY_GROUP_NAME],
+                instance_type=args["type"],
+                dry_run=False)
+        except EC2ResponseError as e:
+            err_msg = e.message
+            print("Error: " + err_msg)
+            if "image id" in err_msg.lower():
+                print("If you are using the default AMI, try upgrade aws-jupyter " +
+                "by `pip install --upgrade aws-jupyter`.")
+            sys.exit(1)
         request_ids = [r.id for r in reservation]
         print("Please wait till the spot instances are fullfilled", end='')
         i = 0
@@ -90,14 +98,22 @@ def create_cluster(args):
         print()
     else:
         print("We will use on-demand instances.")
-        reservation = conn.run_instances(
-            args["ami"],
-            min_count=args["count"],
-            max_count=args["count"],
-            key_name=args["key"],
-            security_groups=[SECURITY_GROUP_NAME],
-            instance_type=args["type"],
-            dry_run=False)
+        try:
+            reservation = conn.run_instances(
+                args["ami"],
+                min_count=args["count"],
+                max_count=args["count"],
+                key_name=args["key"],
+                security_groups=[SECURITY_GROUP_NAME],
+                instance_type=args["type"],
+                dry_run=False)
+        except EC2ResponseError as e:
+            err_msg = e.message
+            print("Error: " + err_msg)
+            if "image id" in err_msg.lower():
+                print("If you are using the default AMI, try upgrade aws-jupyter " +
+                "by `pip install --upgrade aws-jupyter`.")
+            sys.exit(1)
         instance_ids = [instance.id for instance in reservation.instances]
     print("Setting tags.")
     conn.create_tags(instance_ids, {"cluster-name": args["name"]})

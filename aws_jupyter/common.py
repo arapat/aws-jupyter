@@ -6,7 +6,7 @@ import yaml
 
 
 # DEFAULT_AMI = "ami-08cf5e5716f79b01a"  # Jupyter-tmsn, us-east-1
-DEFAULT_AMI = "ami-0a4b14f65e10efa7b"  # us-west-2
+DEFAULT_AMI = "ami-0fc359be23c460554"  # us-west-2
 DEFAULT_REGION = "us-west-2"
 
 def load_config(args, config_path="~/.tmsn_config"):
