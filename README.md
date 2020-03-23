@@ -68,6 +68,8 @@ Run any script in this directory with `-h` argument will print the help message 
 
 `aws-jupyter create` creates a cluster on the `m3.xlarge` instance using an AMI based on Ubuntu.
 
+If the instance comes with attached SSD, it will be mounted to `/mnt`.
+
 #### Example:
 
 ```bash
