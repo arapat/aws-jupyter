@@ -25,7 +25,7 @@ class AwsJupyter:
         parser.add_argument(
             "task",
             help="Task to perform, should be one of 'config', 'access', 'create', 'check', \
-                'terminate', 'run', 'ssh', 'retrieve', 'send-files', 'diagnose'")
+                'terminate', 'run', 'ssh', 'retrieve', 'send-dir', 'diagnose'")
         config = parser.parse_args(sys.argv[1:2])
         raw_task = config.task
         task = raw_task.replace('-', '_')
@@ -73,7 +73,7 @@ class AwsJupyter:
     def run(self):
         main_run_cluster()
 
-    def send_files(self):
+    def send_dir(self):
         main_send_files()
 
     def ssh(self):

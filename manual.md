@@ -45,7 +45,7 @@ At this moment, `aws-jupyter` only supports the `us-west-2` region.
 ## Supported commands
 
 `aws-jupyter` supports following commands:
-"config", "access", "create", "check", "terminate", "run", "ssh", "retrieve", "send-files", "diagnose".
+"config", "access", "create", "check", "terminate", "run", "ssh", "retrieve", "send-dir", "diagnose".
 
 ## Set basic configurations
 
@@ -219,7 +219,7 @@ optional arguments:
 
 ##  Send different configuration files to the instances
 
-`> aws-jupyter send-files`
+`> aws-jupyter send-dir`
 
 Send a local directory to the cluster
 

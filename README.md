@@ -122,7 +122,7 @@ It can be used to, for example, distributing the configuratoin files to all inst
 
 #### Example
 ```bash
-aws-jupyter send-files --local ./configs/ --remote ~/remote-configs
+aws-jupyter send-dir --local ./configs/ --remote ~/remote-configs
 ```
 
 
