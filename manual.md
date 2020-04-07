@@ -217,7 +217,7 @@ optional arguments:
 ```
 
 
-##  Send different configuration files to the instances
+##  Send a local directory to the instances
 
 `> aws-jupyter send-files`
 
