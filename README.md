@@ -115,28 +115,20 @@ aws-jupyter run --script ./script-examples/hello-world.sh
 ```
 
 
-### Send configuration files to all instances in a cluster
+### Send a local directory to the remote instances
 
-In most cases, we would like the different workers/instances in a cluster run with
-different parameters. We can achieve that by generating a different configuration file
-for each worker, and letting the program read its parameter from this file.
-The script `send-configs.py` is used for sending the configuration files to the workers.
-Please refer to the Find Prime Number examples in `/example` for the demonstration of using
-this script.
+Send a local directory to all instances of a cluster.
+It can be used to, for example, distributing the configuratoin files to all instances.
 
 #### Example
-After generating a cluster with `N` workers, one can write a custom script to generate `N`
-configuration files, one for each worker, and save all configuration files in the some directory
-(e.g. `./example-configs/`). After that, run following command
-
 ```bash
-aws-jupyter send-configs --config ./example-configs/
+aws-jupyter send-files --local ./configs/ --remote ~/remote-configs
 ```
 
 
 ## Retrieve files from all instances in a cluster
 
-`retrieve-files.py` retrieve files from the same location on all instances of a cluster.
+Retrieve files from the same location on all instances of a cluster.
 It can be used to collect the output of the program from the workers.
 A local directory for saving the downloaded files should be provided to this script.
 This script will create a separate sub-directory for each worker and download its files

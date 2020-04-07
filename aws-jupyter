@@ -7,7 +7,7 @@ from aws_jupyter.credentials import main_check_access
 from aws_jupyter.diagnose import main_diagnose
 from aws_jupyter.run_cluster import main_run_cluster, run_cluster
 from aws_jupyter.retrieve_files import main_retrieve_files
-from aws_jupyter.send_configs import main_send_configs
+from aws_jupyter.send_files import main_send_files
 from aws_jupyter.set_config import main_set_config
 from aws_jupyter.ssh_headnode import main_ssh_headnode
 from aws_jupyter.terminate_cluster import main_terminate_cluster
@@ -25,7 +25,7 @@ class AwsJupyter:
         parser.add_argument(
             "task",
             help="Task to perform, should be one of 'config', 'access', 'create', 'check', \
-                'terminate', 'run', 'ssh', 'retrieve', 'send-configs', 'diagnose'")
+                'terminate', 'run', 'ssh', 'retrieve', 'send-files', 'diagnose'")
         config = parser.parse_args(sys.argv[1:2])
         raw_task = config.task
         task = raw_task.replace('-', '_')
@@ -73,8 +73,8 @@ class AwsJupyter:
     def run(self):
         main_run_cluster()
 
-    def send_configs(self):
-        main_send_configs()
+    def send_files(self):
+        main_send_files()
 
     def ssh(self):
         main_ssh_headnode()
