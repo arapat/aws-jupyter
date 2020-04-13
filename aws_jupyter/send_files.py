@@ -17,6 +17,7 @@ def parse_file_path(path):
 
 
 def send_files(args):
+    args = load_config(args)
     if not check_exists(args["key_path"]):
         print("Error: File '{}' does not exist.".format(args["key_path"]))
         return
@@ -67,8 +68,7 @@ def main_send_files():
                         help="path to the credential file")
     args = vars(parser.parse_args(sys.argv[2:]))
     args["neighbors"] = os.path.abspath("./neighbors.txt")
-    config = load_config(args)
-    send_files(config)
+    send_files(args)
 
 
 if __name__ == '__main__':

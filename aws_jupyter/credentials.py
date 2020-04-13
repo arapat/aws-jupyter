@@ -9,6 +9,7 @@ from .create_cluster import SECURITY_GROUP_NAME
 
 
 def check_access(args):
+    args = load_config(args)
     conn = boto.ec2.connect_to_region(
         args["region"],
         aws_access_key_id=args["aws_access_key_id"],
@@ -27,8 +28,7 @@ def check_access(args):
 
 def main_check_access():
     argparse.ArgumentParser(description="Check if the access credentials of AWS is valid")
-    config = load_config({})
-    return check_access(config)
+    return check_access({})
 
 
 if __name__ == '__main__':

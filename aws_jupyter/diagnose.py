@@ -9,6 +9,7 @@ from .create_cluster import SECURITY_GROUP_NAME
 
 
 def diagnose(args):
+    args = load_config(args)
     check_security_group = """
     AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}" \
     aws ec2 describe-security-groups --region {} --group-names {}
@@ -30,8 +31,7 @@ def main_diagnose():
                         help="path to the credential file")
     parser.add_argument("--region",
                         help="Region name")
-    args = vars(parser.parse_args(sys.argv[2:]))
-    config = load_config(args)
+    config = vars(parser.parse_args(sys.argv[2:]))
     diagnose(config)
 
 

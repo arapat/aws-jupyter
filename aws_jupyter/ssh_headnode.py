@@ -9,6 +9,7 @@ from .common import query_status
 
 
 def ssh_headnode(args):
+    args = load_config(args)
     all_status = query_status(args)
     if len(all_status) == 0:
         print("No instance found in the cluster '{}'. Quit.".format(args["name"]))
@@ -44,8 +45,8 @@ def main_ssh_headnode():
                         help="Region name")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    config = load_config(vars(parser.parse_args(sys.argv[2:])))
-    ssh_headnode(config)
+    args = vars(parser.parse_args(sys.argv[2:]))
+    ssh_headnode(args)
 
 
 if __name__ == '__main__':

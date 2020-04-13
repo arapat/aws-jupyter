@@ -31,12 +31,12 @@ def main_set_config():
     if user_configs["default_ami"]:
         if user_configs["ami"] is not None:
             print("Error: The arguments '--default-ami' and '--ami' cannot be both set.")
-            sys.exit(1)
+            return False
         user_configs["ami"] = DEFAULT_AMI
     if user_configs["default_region"]:
         if user_configs["region"] is not None:
             print("Error: The arguments '--default-region' and '--region' cannot be both set.")
-            sys.exit(1)
+            return False
         user_configs["region"] = DEFAULT_REGION
     config = load_config(user_configs)
     print("Please set following configuration parameters."
@@ -58,3 +58,4 @@ def main_set_config():
     if s.strip():
         config["credential"] = s.strip()
     load_config(config)
+    return True

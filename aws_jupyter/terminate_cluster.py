@@ -9,6 +9,7 @@ from .common import load_config
 
 
 def terminate_cluster(args):
+    args = load_config(args)
     query_command = """
     AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}" \
     aws ec2 describe-instances \
@@ -65,8 +66,8 @@ def main_terminate_cluster():
                         help="Region name")
     parser.add_argument("--credential",
                         help="path to the credential file")
-    config = load_config(vars(parser.parse_args(sys.argv[2:])))
-    terminate_cluster(config)
+    args = vars(parser.parse_args(sys.argv[2:]))
+    terminate_cluster(args)
 
 
 if __name__ == '__main__':

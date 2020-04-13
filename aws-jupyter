@@ -38,30 +38,15 @@ class AwsJupyter:
         getattr(self, task)()
 
     def config(self):
-        main_set_config()
+        if not main_set_config():
+            sys.exit(1)
 
     def create(self):
-        if main_check_access():
-            main_create_cluster()
+        if not main_check_access() or not main_create_cluster():
+            sys.exit(1)
 
     def check(self):
-        (config, status) = main_check_cluster()
-        if status is None:
-            ready, total = 0, 0
-        else:
-            ready, total = status
-        if ready > 0 and ready == total:
-            print("Cluster is running (yet might still being initialized). \
-                   I will try to start Jupyter notebook now.")
-            script_dir = os.path.join(os.path.dirname(aws_jupyter.__file__), "scripts")
-            config["files"] = ["./neighbors.txt"]
-            config["script"] = os.path.join(script_dir, "install-jupyter-tmsn.sh")
-            config["output"] = True
-            is_worked = run_cluster(config, first_node_only=False)
-            if not is_worked:
-                sys.exit(1)
-        elif total > 0:
-            print("Cluster is not ready. Please check again later.")
+        if not main_check_cluster():
             sys.exit(1)
 
     def diagnose(self):

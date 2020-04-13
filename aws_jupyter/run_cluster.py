@@ -17,6 +17,7 @@ def parse_file_path(path):
 
 
 def run_cluster(args, first_node_only=False):
+    args = load_config(args)
     args["neighbors"] = os.path.abspath("./neighbors.txt")
     args["base_path"] = "/home/ubuntu/workspace"
 
@@ -113,8 +114,7 @@ def main_run_cluster():
     parser.add_argument("--credential",
                         help="path to the credential file")
     args = vars(parser.parse_args(sys.argv[2:]))
-    config = load_config(args)
-    run_cluster(config)
+    run_cluster(args)
 
 
 if __name__ == '__main__':

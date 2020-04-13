@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import tmsn
 import socket
+import sys
 from os.path import expanduser
 from time import sleep
 

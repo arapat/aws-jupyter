@@ -13,6 +13,7 @@ def check_exists(path):
 
 
 def retrieve_file(args):
+    args = load_config(args)
     if not check_exists(args["key_path"]):
         print("Error: File '{}' does not exist.".format(args["key_path"]))
         return
@@ -61,8 +62,7 @@ def main_retrieve_files():
                         help="path to the credential file")
     args = vars(parser.parse_args(sys.argv[2:]))
     args["neighbors"] = os.path.abspath("./neighbors.txt")
-    config = load_config(args)
-    retrieve_file(config)
+    retrieve_file(args)
 
 
 if __name__ == '__main__':

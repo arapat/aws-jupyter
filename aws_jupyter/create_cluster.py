@@ -11,11 +11,9 @@ from boto.exception import EC2ResponseError
 
 from .common import load_config
 from .common import query_status
-from .common import DEFAULT_AMI
 from .common import DEFAULT_REGION
 
 
-DEFAULT_TYPE = "m3.xlarge"
 SECURITY_GROUP_NAME = "aws-jupyter"
 
 
@@ -40,6 +38,8 @@ def create_default_security_group(conn):
 
 
 def create_cluster(args):
+    args = load_config(args)
+
     conn = boto.ec2.connect_to_region(
         args["region"],
         aws_access_key_id=args["aws_access_key_id"],
@@ -51,7 +51,7 @@ def create_cluster(args):
               "Please choose a different cluster name.\n" +
               "Note: If you want to check the status of the cluster '{}', ".format(args["name"]) +
               "please use `aws-jupyter check`.")
-        return
+        return False
 
     # TODO: removed "--associate-public-ip-address" from the options, check if things still work
     print("Creating the cluster...")
@@ -82,7 +82,7 @@ def create_cluster(args):
             if "image id" in err_msg.lower():
                 print("If you are using the default AMI, try upgrade aws-jupyter " +
                 "by `pip install --upgrade aws-jupyter`.")
-            sys.exit(1)
+            return False
         request_ids = [r.id for r in reservation]
         print("Please wait till the spot instances are fullfilled", end='')
         i = 0
@@ -98,7 +98,7 @@ def create_cluster(args):
             if spot_req.state == 'failed':
                 print("\nError: Spot request failed")
                 # TODO: cancel the spot request
-                sys.exit(1)
+                return False
             if not spot_req.instance_id:
                 print(".", end='')
                 sleep(2)
@@ -124,7 +124,7 @@ def create_cluster(args):
             if "image id" in err_msg.lower():
                 print("If you are using the default AMI, try upgrade aws-jupyter " +
                 "by `pip install --upgrade aws-jupyter`.")
-            sys.exit(1)
+            return False
         instance_ids = [instance.id for instance in reservation.instances]
     print("Setting tags.")
     conn.create_tags(instance_ids, {"cluster-name": args["name"]})
@@ -135,6 +135,7 @@ def create_cluster(args):
         else:
             print("{} (on demand)".format(instance))
     print("Done.")
+    return True
 
 
 def main_create_cluster():
@@ -162,21 +163,11 @@ def main_create_cluster():
                         will use on-demand instances",
                         type=float)
     args = vars(parser.parse_args(sys.argv[2:]))
-    if args["ami"] is None:
-        print("AMI is not specified. Default AMI set to '{}'".format(DEFAULT_AMI))
-        args["ami"] = DEFAULT_AMI
-    if args["type"] is None:
-        print("Instance type is not specified. Default instance type set to '{}'".format(
-            DEFAULT_TYPE))
-        args["type"] = DEFAULT_TYPE
-    if args["spot"] is None:
-        args["spot"] = 0.0
-    config = load_config(args)
     if args["region"] != DEFAULT_REGION:
         print("We only support {} region. Please change the configuration by running \
                 `aws-jupyter config`.".format(DEFAULT_REGION))
-    else:
-        create_cluster(config)
+        return False
+    return create_cluster(args)
 
 
 if __name__ == '__main__':
