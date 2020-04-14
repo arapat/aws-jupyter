@@ -3,6 +3,9 @@ This script launches a cluster on AWS EC2 instances and starts a Jupyter noteboo
 Please read the [manual](manual.md) for the details of all supported commands.
 [QuickStartGuide.md](QuickStartGuide.md) offers a guided example to show what `aws-jupyter` can do.
 
+`aws-jupyter` is intended as a commandline tool, but you can integrate it to
+a custom Python script. [module-doc.md](module-doc.md) provides a brief how-to.
+
 ## Install
 
 Pleasure ensure you have Python 3. `aws-jupyter` can be install using `pip`:

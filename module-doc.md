@@ -1,6 +1,6 @@
 # Use aws-jupyter as a python module
 
-This document describe how to integrate `aws-jupyter` into your Python program as a module.
+This document describe how to integrate `aws-jupyter` into your Python program as a module (see [this example](examples/use-as-module.ipynb)).
 
 ## Basic usage
 
