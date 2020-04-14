@@ -40,7 +40,7 @@ check_status_and_init({
 ## Terminate a cluster `$ aws-jupyter terminate`
 
 ```python
-from aws_jupyter.credentials import terminate_cluster
+from aws_jupyter.terminate_cluster import terminate_cluster
 terminate_cluster({
     "name": "cluster-name",
 })

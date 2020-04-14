@@ -8,7 +8,7 @@ from operator import itemgetter
 from .common import load_config
 
 
-def terminate_cluster(args):
+def terminate_cluster(args, confirm=False):
     args = load_config(args)
     query_command = """
     AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}" \
@@ -32,11 +32,12 @@ def terminate_cluster(args):
     if total == 0:
         print("No running instance found in the cluster(s) '{}'. Quit.".format(args["name"]))
         return
-    confirm = input("Shutting down {} instances in the cluster(s) '{}'. "
-                    "Are you sure? (y/N) ".format(total, args["name"]))
-    if confirm.strip().lower() != 'y':
-        print("Operation cancelled. Nothing is changed. Quit.")
-        return
+    if confirm:
+        confirm_msg = input("Shutting down {} instances in the cluster(s) '{}'. "
+                        "Are you sure? (y/N) ".format(total, args["name"]))
+        if confirm_msg.strip().lower() != 'y':
+            print("Operation cancelled. Nothing is changed. Quit.")
+            return
 
     term_command = ""
     for status in all_status:
@@ -67,7 +68,7 @@ def main_terminate_cluster():
     parser.add_argument("--credential",
                         help="path to the credential file")
     args = vars(parser.parse_args(sys.argv[2:]))
-    terminate_cluster(args)
+    terminate_cluster(args, confirm=True)
 
 
 if __name__ == '__main__':
