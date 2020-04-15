@@ -163,6 +163,7 @@ def main_create_cluster():
                         will use on-demand instances",
                         type=float)
     args = vars(parser.parse_args(sys.argv[2:]))
+    args = load_config(args)
     if args["region"] != DEFAULT_REGION:
         print("We only support {} region. Please change the configuration by running \
                 `aws-jupyter config`.".format(DEFAULT_REGION))
