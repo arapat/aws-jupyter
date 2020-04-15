@@ -1,3 +1,4 @@
+import boto.ec2
 import json
 import os
 import subprocess
@@ -81,17 +82,17 @@ def load_config(args, config_path="~/.tmsn_config"):
 
 
 def query_status(args):
-    query_command = """
-    AWS_ACCESS_KEY_ID="{}" AWS_SECRET_ACCESS_KEY="{}" \
-    aws ec2 describe-instances --region {} \
-        --filter "Name=tag:cluster-name,Values={}" "Name=instance-state-name,Values=pending,running" \
-        --query 'Reservations[*].Instances[*].[State.Name,PublicIpAddress]'
-    """.format(
-        args["aws_access_key_id"], args["aws_secret_access_key"], args["region"], args["name"])
-    result = subprocess.run(query_command, shell=True, check=True, stdout=subprocess.PIPE)
-    output = result.stdout
-    all_status = json.loads(output)
-    return all_status
+    conn = boto.ec2.connect_to_region(
+        args["region"],
+        aws_access_key_id=args["aws_access_key_id"],
+        aws_secret_access_key=args["aws_secret_access_key"])
+    instances = conn.get_only_instances(filters={
+        "tag:cluster-name": args["name"],
+    })
+    return [{
+        "state": instance.state,
+        "ip_address": instance.ip_address,
+    } for instance in instances if instance.state in ["pending", "running"]]
 
 
 def check_connections(instances, args, timeout=2):

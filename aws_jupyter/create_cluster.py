@@ -45,8 +45,7 @@ def create_cluster(args):
         aws_access_key_id=args["aws_access_key_id"],
         aws_secret_access_key=args["aws_secret_access_key"])
     create_default_security_group(conn)
-    all_status = query_status(args)
-    if len(all_status):
+    if len(query_status(args)):
         print("Error: A cluster with the name '{}' exists. ".format(args["name"]) +
               "Please choose a different cluster name.\n" +
               "Note: If you want to check the status of the cluster '{}', ".format(args["name"]) +

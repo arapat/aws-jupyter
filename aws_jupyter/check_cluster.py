@@ -16,22 +16,16 @@ def check_cluster(args):
     if len(all_status) == 0:
         print("No instance found in the cluster '{}'. Quit.".format(args["name"]))
         return
-    print("{} clusters found with the name '{}'.".format(len(all_status), args["name"]))
 
-    num_clusters = 0
     cluster_status = None
-    for idx, status in enumerate(all_status):
-        total = len(status)
-        if total == 0:
-            continue
-        print("\nCluster {}:".format(idx + 1))
-        ready = sum(t[0] == "running" for t in status)
-        cluster_status = (ready, total)
-        neighbors = list(map(itemgetter(1), status))
-        print("    Total instances: {}\n    Running: {}".format(total, ready))
-        if ready == 0:
-            print("    Instances status: {}".format(status[0][0]))
-            continue
+    total = len(all_status)
+    ready = len([t for t in all_status if t["state"] == "running"])
+    cluster_status = (ready, total)
+    neighbors = list(map(lambda t: t["ip_address"], all_status))
+    print("    Total instances: {}\n    Running: {}".format(total, ready))
+    if ready == 0:
+        print("    Instances status: {}".format(all_status[0]["state"]))
+    if total > 0:
         with open("neighbors.txt", 'w') as f:
             if total == ready:
                 f.write("Ready. ")
@@ -41,10 +35,6 @@ def check_cluster(args):
             f.write('\n'.join(neighbors))
         print("    The public IP addresses of the instances have been written into "
               "`./neighbors.txt`")
-        num_clusters += 1
-    if num_clusters > 1:
-        print("WARN: More than 1 cluster with the name '{}' exists. "
-              "Only the IP addresses of the instances of the last cluster have been written to disk.")
     return cluster_status
 
 

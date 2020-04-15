@@ -4,7 +4,6 @@ import boto.ec2
 from boto.exception import EC2ResponseError
 
 from .common import load_config
-from .common import query_status
 from .create_cluster import SECURITY_GROUP_NAME
 
 

@@ -14,23 +14,13 @@ def ssh_headnode(args):
     if len(all_status) == 0:
         print("No instance found in the cluster '{}'. Quit.".format(args["name"]))
         return
-    print("{} clusters found with the name '{}'.".format(len(all_status), args["name"]))
 
-    for idx, status in enumerate(all_status):
-        total = len(status)
-        if total == 0:
-            continue
-        print("\nCluster {}:".format(idx + 1))
-        ready = sum(t[0] == "running" for t in status)
-        # neighbors = list(map(itemgetter(1), status))
-        print("    Total instances: {}\n    Running: {}".format(total, ready))
-        if ready == 0:
-            print("    Instances status: {}".format(status[0][0]))
-            continue
+    ready_ip_address = [t["ip_address"] for t in all_status if t["state"] == "running"]
+    if len(ready_ip_address) == 0:
+        print("No instance is ready. Quit.")
+    else:
         print("Connecting to the first node.")
-        url = [t[1] for t in status if t[0] == "running"][0]
-        os.system("ssh -i {} ubuntu@{}".format(args["key_path"], url))
-        break
+        os.system("ssh -i {} ubuntu@{}".format(args["key_path"], ready_ip_address[0]))
 
 
 def main_ssh_headnode():

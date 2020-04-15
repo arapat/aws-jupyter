@@ -4,7 +4,6 @@ import subprocess
 import sys
 
 from .common import load_config
-from .common import query_status
 from .create_cluster import SECURITY_GROUP_NAME
 
 
