@@ -66,7 +66,7 @@ def create_cluster(args):
         try:
             reservation = conn.request_spot_instances(
                 price=float(args["spot"]),
-                placement=f"{args['region']}c",
+                placement=f"{args['region']}a",
                 image_id=args["ami"],
                 count=args["count"],
                 type='one-time',

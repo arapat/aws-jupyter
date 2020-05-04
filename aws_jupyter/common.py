@@ -29,13 +29,21 @@ def load_config(args, config_path="~/.tmsn_config"):
             config = yaml.safe_load(f)
     # Load arguments
     if "type" not in args or args["type"] is None:
-        print("Instance type is not specified. Default instance type set to '{}'".format(
-            DEFAULT_TYPE))
-        args["type"] = DEFAULT_TYPE
+        if "type" in config:
+            args["type"] = config["type"]
+        else:
+            args["type"] = DEFAULT_TYPE
+        print("Instance type is not specified. Default instance type set to '{}'".format(args["type"]))
     if "spot" not in args or args["spot"] is None:
-        args["spot"] = 0.0
+        if "spot" in config:
+            args["spot"] = config["spot"]
+        else:
+            args["spot"] = 0.0
     if "ami" not in args or args["ami"] is None:
-        args["ami"] = DEFAULT_AMI
+        if "ami" in config:
+            args["ami"] = config["ami"]
+        else:
+            args["ami"] = DEFAULT_AMI
         print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
     if "region" not in args or args["region"] is None:
         if "region" in config:
