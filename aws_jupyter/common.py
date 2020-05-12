@@ -31,26 +31,31 @@ def load_config(args, config_path="~/.tmsn_config"):
     if "type" not in args or args["type"] is None:
         if "type" in config:
             args["type"] = config["type"]
+            print("Instance type is not specified. Local config is set to '{}'".format(args["type"]))
         else:
             args["type"] = DEFAULT_TYPE
             print("Instance type is not specified. Default instance type set to '{}'".format(args["type"]))
     if "spot" not in args or args["spot"] is None:
         if "spot" in config:
             args["spot"] = config["spot"]
+            print("Spot price is not specified. Local config is set to '{}'".format(args["spot"]))
         else:
             args["spot"] = 0.0
+            print("Spot price is not specified. Default value is set to '{}'".format(args["spot"]))
     if "ami" not in args or args["ami"] is None:
         if "ami" in config:
             args["ami"] = config["ami"]
+            print("AMI is not specified. Local config is set to '{}'".format(args["ami"]))
         else:
             args["ami"] = DEFAULT_AMI
-            print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
+            print("AMI is not specified. Default AMI is set to '{}'".format(args["ami"]))
     if "region" not in args or args["region"] is None:
         if "region" in config:
             args["region"] = config["region"]
+            print("Region is not specified. Local config is set to '{}'".format(args["region"]))
         else:
             args["region"] = DEFAULT_REGION
-            print("Region is not specified. Default region set to '{}'".format(args["region"]))
+            print("Region is not specified. Default region s set to '{}'".format(args["region"]))
     warning = False
     output = ""
     for t in args:
