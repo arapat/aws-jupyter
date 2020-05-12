@@ -33,7 +33,7 @@ def load_config(args, config_path="~/.tmsn_config"):
             args["type"] = config["type"]
         else:
             args["type"] = DEFAULT_TYPE
-        print("Instance type is not specified. Default instance type set to '{}'".format(args["type"]))
+            print("Instance type is not specified. Default instance type set to '{}'".format(args["type"]))
     if "spot" not in args or args["spot"] is None:
         if "spot" in config:
             args["spot"] = config["spot"]
@@ -44,13 +44,13 @@ def load_config(args, config_path="~/.tmsn_config"):
             args["ami"] = config["ami"]
         else:
             args["ami"] = DEFAULT_AMI
-        print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
+            print("AMI is not specified. Default AMI set to '{}'".format(args["ami"]))
     if "region" not in args or args["region"] is None:
         if "region" in config:
             args["region"] = config["region"]
         else:
             args["region"] = DEFAULT_REGION
-        print("Region is not specified. Default region set to '{}'".format(args["region"]))
+            print("Region is not specified. Default region set to '{}'".format(args["region"]))
     warning = False
     output = ""
     for t in args:
