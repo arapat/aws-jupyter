@@ -18,6 +18,7 @@ def parse_file_path(path):
 
 def send_files(args):
     args = load_config(args)
+    args["neighbors"] = os.path.abspath("./neighbors.txt")
     if not check_exists(args["key_path"]):
         print("Error: File '{}' does not exist.".format(args["key_path"]))
         return
@@ -52,6 +53,7 @@ def send_files(args):
                     "").format(key, local_path, url, remote_path)
         subprocess.run(command, shell=True, check=True)
     print("Done.")
+    return True
 
 
 def main_send_files():
